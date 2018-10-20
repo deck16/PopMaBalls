@@ -21,11 +21,23 @@
 #include "MainWindow.h"
 #include "Game.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd )
+	wnd(wnd),
+	gfx(wnd),
+	rng(rd()),
+	cDist(Balloon::colorLowerBound, 255),
+	rDist(Balloon::minRadius, Balloon::maxRadius),
+	xDist(Balloon::maxRadius, Graphics::ScreenWidth - Balloon::maxRadius),
+	yDist(Balloon::maxRadius, Graphics::ScreenHeight - Balloon::maxRadius)
 {
+	for (Balloon& b : balloons)
+	{
+		const float r = rDist(rng);
+		const Vec2 pos = { xDist(rng), yDist(rng) };
+		const Color c = { (unsigned char)cDist(rng) , (unsigned char)cDist(rng) , (unsigned char)cDist(rng) };
+		b = { pos, r, c };
+	}
 }
 
 void Game::Go()
@@ -38,8 +50,25 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = ft.Mark();
+	for (Balloon& b : balloons)
+	{
+		b.Update(dt);
+		if (b.GetState() == Balloon::State::Missed)
+		{
+			b.Relocate({ xDist(rng), yDist(rng) });
+		}
+		else if (b.GetState() == Balloon::State::Popped)
+		{
+			b.Respawn({ xDist(rng), yDist(rng) }, rDist(rng), cDist(rng));
+		}
+	}
 }
 
 void Game::ComposeFrame()
 {
+	for (Balloon& b : balloons)
+	{
+		b.Draw(gfx);
+	}
 }

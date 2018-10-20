@@ -23,7 +23,9 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-
+#include "Balloon.h"
+#include "FrameTimer.h"
+#include <random>
 class Game
 {
 public:
@@ -38,8 +40,19 @@ private:
 	/*  User Functions              */
 	/********************************/
 private:
+	static constexpr int nBalloons = 5;
 	MainWindow& wnd;
 	Graphics gfx;
+
+	std::mt19937 rng;
+	std::random_device rd;
+	std::uniform_real_distribution<float>xDist;
+	std::uniform_real_distribution<float>yDist;
+	std::uniform_real_distribution<float>rDist;
+	std::uniform_int_distribution<int>cDist;
+
+	FrameTimer ft;
+	Balloon balloons[nBalloons];
 	/********************************/
 	/*  User Variables              */
 	/********************************/
