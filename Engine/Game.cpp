@@ -28,15 +28,19 @@ Game::Game(MainWindow& wnd)
 	rng(rd()),
 	cDist(Balloon::colorLowerBound, 255),
 	rDist(Balloon::minRadius, Balloon::maxRadius),
-	xDist(Balloon::maxRadius, Graphics::ScreenWidth - Balloon::maxRadius),
-	yDist(Balloon::maxRadius, Graphics::ScreenHeight - Balloon::maxRadius)
+	xDist(Balloon::maxRadius/0.5f, Graphics::ScreenWidth - Balloon::maxRadius/0.5f),
+	yDist(Balloon::maxRadius/0.5f, Graphics::ScreenHeight - Balloon::maxRadius/0.5f),
+	pDist(0.0f, 1.0f),
+	popSnd(L"Sounds//pop.wav"),
+	missSnd(L"Sounds//miss.wav")
 {
 	for (Balloon& b : balloons)
 	{
 		const float r = rDist(rng);
 		const Vec2 pos = { xDist(rng), yDist(rng) };
 		const Color c = { (unsigned char)cDist(rng) , (unsigned char)cDist(rng) , (unsigned char)cDist(rng) };
-		b = { pos, r, c };
+		const Vec2 pDir = { pDist(rng), pDist(rng) };
+		b = { pos, r, c, rng };
 	}
 }
 
@@ -50,7 +54,29 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	bool hit = false;
 	const float dt = ft.Mark();
+	while (!wnd.mouse.IsEmpty())
+	{
+		const Mouse::Event e = wnd.mouse.Read();
+		if (e.GetType() == Mouse::Event::Type::LPress)
+		{
+			for (int i = 0; i < nBalloons; i++)
+			{
+				const Vec2 mpos = { (float)e.GetPosX(), (float)e.GetPosY() };
+				if (balloons[i].IsInsideBalloon(mpos))
+				{
+					balloons[i].Pop();
+					popSnd.Play();
+					hit = true;
+				}
+				else if ((i == nBalloons-1) && !hit)
+				{
+					missSnd.Play();
+				}
+			}
+		}
+	}
 	for (Balloon& b : balloons)
 	{
 		b.Update(dt);
@@ -60,7 +86,13 @@ void Game::UpdateModel()
 		}
 		else if (b.GetState() == Balloon::State::Popped)
 		{
-			b.Respawn({ xDist(rng), yDist(rng) }, rDist(rng), cDist(rng));
+			counter += dt;
+			if (counter > 0.5f)
+			{
+				counter = 0;
+				b.Respawn({ xDist(rng), yDist(rng) }, rDist(rng),
+					{ (unsigned char)cDist(rng), (unsigned char)cDist(rng),(unsigned char)cDist(rng) }, rng);
+			}
 		}
 	}
 }

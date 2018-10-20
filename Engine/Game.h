@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include "Balloon.h"
 #include "FrameTimer.h"
+#include "Sound.h"
 #include <random>
 class Game
 {
@@ -40,7 +41,7 @@ private:
 	/*  User Functions              */
 	/********************************/
 private:
-	static constexpr int nBalloons = 5;
+	static constexpr int nBalloons = 4;
 	MainWindow& wnd;
 	Graphics gfx;
 
@@ -49,10 +50,14 @@ private:
 	std::uniform_real_distribution<float>xDist;
 	std::uniform_real_distribution<float>yDist;
 	std::uniform_real_distribution<float>rDist;
+	std::uniform_real_distribution<float>pDist;
 	std::uniform_int_distribution<int>cDist;
 
+	float counter = 0.0f;
 	FrameTimer ft;
 	Balloon balloons[nBalloons];
+	Sound popSnd;
+	Sound missSnd;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
