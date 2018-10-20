@@ -10,7 +10,7 @@ Balloon::Balloon(const Vec2& _pos, float _size, Color _c, std::mt19937& rng)
 	for (Balloon::Particle& p : particles)
 	{
 		p.GenerateVel(rng);
-		p = Balloon::Particle(pos, p.GetVel()*3000.0f, size*Balloon::Particle::sizeRatio, _c);
+		p = Balloon::Particle(pos, p.GetVel(), size*Balloon::Particle::sizeRatio, _c);
 	}
 }
 
@@ -87,11 +87,11 @@ void Balloon::Respawn(const Vec2 & _pos, float _size, Color _c, std::mt19937& rn
 	size = _size;
 	c = _c;
 	state = State::Active;
-	isPopped = false;
+	isPopped = false; 
 	for (Balloon::Particle& p : particles)
-	{
+	{	
 		p.GenerateVel(rng);
-		p.Respawn(_pos, p.GetVel()*1000.0f, _size*Balloon::Particle::sizeRatio, _c );
+		p.Respawn(_pos, p.GetVel(), _size*Balloon::Particle::sizeRatio, _c );
 	}
 }
 
@@ -142,8 +142,9 @@ void Balloon::Particle::Relocate(const Vec2 & _pos)
 
 void Balloon::Particle::GenerateVel(std::mt19937 & rng)
 {
-	std::uniform_real_distribution<float>dist(0.0f, 0.1f);
-	vel = { dist(rng), dist(rng) };
+	std::uniform_real_distribution<float>xdist(-speed, speed);
+	std::uniform_real_distribution<float>ydist(-speed, speed);
+	vel = { xdist(rng), ydist(rng) };
 }
 
 Vec2 Balloon::Particle::GetVel() const

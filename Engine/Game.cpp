@@ -30,7 +30,7 @@ Game::Game(MainWindow& wnd)
 	rDist(Balloon::minRadius, Balloon::maxRadius),
 	xDist(Balloon::maxRadius/0.5f, Graphics::ScreenWidth - Balloon::maxRadius/0.5f),
 	yDist(Balloon::maxRadius/0.5f, Graphics::ScreenHeight - Balloon::maxRadius/0.5f),
-	pDist(0.0f, 1.0f),
+	pDist(0.5f, 1.0f),
 	popSnd(L"Sounds//pop.wav"),
 	missSnd(L"Sounds//miss.wav")
 {
@@ -87,7 +87,7 @@ void Game::UpdateModel()
 		else if (b.GetState() == Balloon::State::Popped)
 		{
 			counter += dt;
-			if (counter > 0.5f)
+			if (counter > 0.2f)
 			{
 				counter = 0;
 				b.Respawn({ xDist(rng), yDist(rng) }, rDist(rng),

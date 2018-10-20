@@ -26,9 +26,9 @@ public:
 		void Relocate(const Vec2& _pos);
 		void GenerateVel(std::mt19937& rng);
 		Vec2 GetVel() const;
-		static constexpr float sizeRatio = 0.1f;
+		static constexpr float sizeRatio = 0.09f;
+		static constexpr float speed = 200.0f;
 	private:
-		static constexpr float speed = 10.0f;
 		bool isVisible = false;
 		Vec2 pos;
 		Vec2 vel;
