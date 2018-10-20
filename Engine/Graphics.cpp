@@ -318,12 +318,14 @@ void Graphics::PutPixel( int x,int y,Color c )
 
 void Graphics::FillCircle(int x, int y, int r, Color c)
 {
+	const int r_sq = r * r;
 	for (int i = x - r+1; i < x + r; i++ )
 	{
 		for (int j = y - r+1; j < y + r; j++)
 		{
-			const float r_ij = sqrt((x-i)*(x-i) + (y-j)*(y-j));
-			if (r_ij <= r)
+			const int x_diff = x - i;
+			const int y_diff = y - j;
+			if (x_diff * x_diff + y_diff * y_diff <= r_sq)
 			{
 				PutPixel(i, j, c);
 			}

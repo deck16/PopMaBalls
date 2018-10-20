@@ -60,7 +60,7 @@ public:
 	void FillCircle(int x, int y, int r, Color c);
 	void FillCircle(const Vec2& center, float r, Color c)
 	{
-		FillCircle((int)center.x, (int)center.y, r, c);
+		FillCircle((int)center.x, (int)center.y, (int)r, c);
 	}
 	~Graphics();
 private:
