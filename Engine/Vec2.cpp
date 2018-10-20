@@ -55,7 +55,7 @@ float Vec2::GetLengthSq() const
 
 float Vec2::GetLength() const
 {
-	return sqrt(GetLengthSq());
+	return (float)sqrt(GetLengthSq());
 }
 
 Vec2 Vec2::GetNormalized() const
