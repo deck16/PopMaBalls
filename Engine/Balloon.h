@@ -44,6 +44,7 @@ public:
 	void Relocate(const Vec2& newpos);
 	bool IsInsideBalloon(const Vec2& v) const;
 	void Respawn(const Vec2& _pos, float _size, Color _c, std::mt19937& rng);
+	int GetScore() const;
 	State GetState() const;
 
 	static constexpr float maxRadius = 50.0f;
@@ -52,6 +53,7 @@ public:
 private:
 	static constexpr float inflateRate = 20.0f;
 	static constexpr int nParticles = 20;
+	int score;
 	bool isDeflating = false;
 	Color c;
 	float size;

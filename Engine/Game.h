@@ -52,7 +52,7 @@ private:
 	std::uniform_real_distribution<float>rDist;
 	std::uniform_real_distribution<float>pDist;
 	std::uniform_int_distribution<int>cDist;
-
+	int totalScore = 0;
 	float counter = 0.0f;
 	FrameTimer ft;
 	Balloon balloons[nBalloons];

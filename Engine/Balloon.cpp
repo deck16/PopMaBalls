@@ -12,6 +12,7 @@ Balloon::Balloon(const Vec2& _pos, float _size, Color _c, std::mt19937& rng)
 		p.GenerateVel(rng);
 		p = Balloon::Particle(pos, p.GetVel(), size*Balloon::Particle::sizeRatio, _c);
 	}
+	score = (int)_size;
 }
 
 void Balloon::Draw(Graphics & gfx) const
@@ -93,6 +94,12 @@ void Balloon::Respawn(const Vec2 & _pos, float _size, Color _c, std::mt19937& rn
 		p.GenerateVel(rng);
 		p.Respawn(_pos, p.GetVel(), _size*Balloon::Particle::sizeRatio, _c );
 	}
+	score = (int)_size;
+}
+
+int Balloon::GetScore() const
+{
+	return score;
 }
 
 Balloon::State Balloon::GetState() const

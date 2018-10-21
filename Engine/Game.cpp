@@ -89,6 +89,7 @@ void Game::UpdateModel()
 			counter += dt;
 			if (counter > 0.2f)
 			{
+				totalScore += b.GetScore();
 				counter = 0;
 				b.Respawn({ xDist(rng), yDist(rng) }, rDist(rng),
 					{ (unsigned char)cDist(rng), (unsigned char)cDist(rng),(unsigned char)cDist(rng) }, rng);
@@ -102,5 +103,13 @@ void Game::ComposeFrame()
 	for (Balloon& b : balloons)
 	{
 		b.Draw(gfx);
+	}
+	if (totalScore < Graphics::ScreenWidth - 20)
+	{
+		gfx.DrawRect({ 10.0f, 10.0f }, totalScore, 10, { 255, 200, 255 });
+	}
+	else
+	{
+		gfx.DrawRect({ 10.0f, 10.0f }, Graphics::ScreenWidth - 20, 10, { 255,255,0 });
 	}
 }
